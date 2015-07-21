@@ -610,17 +610,25 @@ public class LineChartRenderer: ChartDataRendererBase
             
             var y = CGFloat(yValue) * _animator.phaseY; // get the y-position
             
-            _highlightPtsBuffer[0] = CGPoint(x: CGFloat(xIndex), y: CGFloat(chartYMax))
-            _highlightPtsBuffer[1] = CGPoint(x: CGFloat(xIndex), y: CGFloat(chartYMin))
-            _highlightPtsBuffer[2] = CGPoint(x: CGFloat(delegate!.lineChartRendererChartXMin(self)), y: y)
-            _highlightPtsBuffer[3] = CGPoint(x: CGFloat(chartXMax), y: y)
+            var ptsCnt = 0
+            
+            if (set.drawVerticalHighlightIndicatorEnabled) {
+                _highlightPtsBuffer[ptsCnt++] = CGPoint(x: CGFloat(xIndex), y: CGFloat(chartYMax))
+                _highlightPtsBuffer[ptsCnt++] = CGPoint(x: CGFloat(xIndex), y: CGFloat(chartYMin))
+            }
+            
+            if (set.drawHorizontalHighlightIndicatorEnabled) {
+                _highlightPtsBuffer[ptsCnt++] = CGPoint(x: CGFloat(delegate!.lineChartRendererChartXMin(self)), y: y)
+                _highlightPtsBuffer[ptsCnt++] = CGPoint(x: CGFloat(chartXMax), y: y)
+            }
+            
             
             var trans = delegate!.lineChartRenderer(self, transformerForAxis: set.axisDependency)
             
             trans.pointValuesToPixel(&_highlightPtsBuffer)
             
             // draw the highlight lines
-            CGContextStrokeLineSegments(context, _highlightPtsBuffer, 4)
+            CGContextStrokeLineSegments(context, _highlightPtsBuffer, ptsCnt)
         }
         
         CGContextRestoreGState(context)

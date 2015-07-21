@@ -26,6 +26,9 @@ public class LineChartDataSet: LineRadarChartDataSet
     public var lineDashPhase = CGFloat(0.0)
     public var lineDashLengths: [CGFloat]!
     
+    public var drawVerticalHighlightIndicatorEnabled = true
+    public var drawHorizontalHighlightIndicatorEnabled = true
+    
     /// if true, drawing circles is enabled
     public var drawCirclesEnabled = true
     
